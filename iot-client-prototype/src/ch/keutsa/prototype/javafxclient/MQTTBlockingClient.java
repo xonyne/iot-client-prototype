@@ -116,6 +116,7 @@ public class MQTTBlockingClient implements MqttCallback {
 
 			// Set this wrapper as the callback handler
 			client.setCallback(this);
+			client.connect();
 
 		} catch (MqttException e) {
 			e.printStackTrace();
@@ -206,7 +207,7 @@ public class MQTTBlockingClient implements MqttCallback {
 	}
 	
 	public boolean isConnected () {
-		return this.isConnected();
+		return client.isConnected();
 	}
 
 	/**

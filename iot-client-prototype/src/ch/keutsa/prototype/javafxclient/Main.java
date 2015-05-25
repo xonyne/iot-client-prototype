@@ -2,11 +2,13 @@ package ch.keutsa.prototype.javafxclient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Properties;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import ch.keutsa.prototype.logic.Receiver;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -16,26 +18,26 @@ import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
 
-	MQTTBlockingClient mqttBlockingClient;
+	Label lblStatus;
 
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
+			Receiver receiver = new Receiver();
+			receiver.listen();
 					
-			Label lblStatus = new Label("Status");
-			lblStatus.setMaxWidth(Double.MAX_VALUE);
-			BorderPane.setAlignment(lblStatus, Pos.BOTTOM_LEFT);
-			root.getChildren().add(lblStatus);
+			BorderPane root = new BorderPane();
 			
+			lblStatus = new Label("Status");
+			lblStatus.setMaxWidth(Double.MAX_VALUE);
+			root.setBottom(lblStatus);
+			BorderPane.setAlignment(lblStatus, Pos.BOTTOM_LEFT);
+
 			Scene scene = new Scene(root, 400, 400);
 			scene.getStylesheets().add(
 					getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
-			primaryStage.show();
-			
-			mqttBlockingClient = initializeMQTTClient();
-			lblStatus.setText(mqttBlockingClient.isConnected() ? "Verbunden" : "Nich verbunden");
+			primaryStage.show();	
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,7 +47,12 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
+	public void updateStatus(String mac){
+		lblStatus.setText(new Date().toString() +  ": New message arrived from " + mac + "...");
+	}
+	
+	@Deprecated
 	private MQTTBlockingClient initializeMQTTClient() throws IOException {
 
 		final String MQTT_SETTINGS = "mqttSettings.properties";
@@ -57,13 +64,13 @@ public class Main extends Application {
 		in.close();
 
 		// Read MQTT settings
-		boolean quietMode = Boolean.valueOf(prop.get("quietMode").toString());
-		String broker = prop.get("broker").toString();
-		int port = Integer.valueOf(prop.get("port").toString());
-		boolean cleanSession = Boolean.valueOf(prop.get("cleanSession").toString());
-		boolean ssl = Boolean.valueOf(prop.get("ssl").toString());
-		String password = prop.get("password").toString();
-		String userName = prop.get("user").toString();
+		boolean quietMode = Boolean.valueOf(prop.getProperty("quietMode"));
+		String broker = prop.getProperty("broker");
+		int port = Integer.valueOf(prop.getProperty("port"));
+		boolean cleanSession = Boolean.valueOf(prop.getProperty("cleanSession"));
+		boolean ssl = Boolean.valueOf(prop.getProperty("ssl"));
+		String password = prop.getProperty("password").toString();
+		String userName = prop.getProperty("user");
 
 		String protocol = "tcp://";
 		if (ssl) {
