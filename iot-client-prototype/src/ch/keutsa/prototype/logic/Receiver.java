@@ -1,12 +1,14 @@
 package ch.keutsa.prototype.logic;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+
+import javafx.application.Platform;
+import javafx.scene.layout.BorderPane;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -14,12 +16,19 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 
+import ch.keutsa.prototype.javafxclient.MainWindow;
+import ch.keutsa.prototype.javafxclient.StatisticsWindow;
 import ch.keutsa.prototype.model.RegularBundle;
 
 public class Receiver {
-
+	
+	MainWindow mainWindow;
+	
+	public Receiver(MainWindow mainWindow) {
+		this.mainWindow = mainWindow;
+	};
+	
 	public void listen()  {
 		
 		new Thread(new Runnable() {
@@ -42,15 +51,18 @@ public class Receiver {
 							try {
 								System.out.println(string + ";" + mm);
 								RegularBundle regularBundle = (RegularBundle)SerialHelper.fromString(mm.toString());
-								String folder = regularBundle.getClientMac().getMac().replace(":", "");
-								Path path = FileSystems.getDefault().getPath("messages" + "/" + folder);
-								if (!Files.exists(path)) {
-								    new File(path.toString()).mkdirs();
+								String macAddress = regularBundle.getClientMac().getMac().replace(":", "");
+								String date = new SimpleDateFormat("yyyyMMddHHmmssS").format(regularBundle.getClientTime());
+								Path directory = FileSystems.getDefault().getPath("messages" + "/" + macAddress);
+								if (!Files.exists(directory)) {
+								    new File(directory.toString()).mkdirs();
 								}
-								String filename = new SimpleDateFormat("yyyyMMddHHmmssS").format(regularBundle.getClientTime());
-								File outputFile = new File(path.toString() + "/" + filename +".xml");
+								File outputFile = new File(directory.toString() + "/" + date +".xml");
 								outputFile.createNewFile();
 								XMLHelper.saveInstance(outputFile, regularBundle);
+								Platform.runLater(() -> {
+									mainWindow.updateStatus(macAddress);
+								});
 								
 							} catch (Exception e) {
 								e.printStackTrace();
