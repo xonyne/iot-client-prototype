@@ -3,7 +3,7 @@ package ch.keutsa.prototype.javafxclient;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import ch.keutsa.prototype.model.RegularBundle;
+import ch.keutsa.prototype.model.basic.RegularBundle;
 import ch.keutsa.prototype.model.basic.ConnectionCode;
 import ch.keutsa.prototype.model.basic.Location;
 import ch.keutsa.prototype.model.basic.MacAddress;
@@ -50,7 +50,7 @@ public class MainIoT extends Application {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class.getResource("view/RootLayout.fxml"));
+			loader.setLocation(MainIoT.class.getResource("../view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 			RootLayoutController controller = loader.getController();
 			controller.setMain(this);
@@ -70,7 +70,7 @@ public class MainIoT extends Application {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class.getResource("view/BarChart.fxml"));
+			loader.setLocation(MainIoT.class.getResource("../view/BarChart.fxml"));
 			BorderPane barChart = (BorderPane) loader.load();
 		
 			rootLayout.setCenter(barChart);
@@ -88,7 +88,7 @@ public class MainIoT extends Application {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class.getResource("view/InfoTable.fxml"));
+			loader.setLocation(MainIoT.class.getResource("../view/InfoTable.fxml"));
 			BorderPane infoTable = (BorderPane) loader.load();
 		
 			rootLayout.setCenter(infoTable);
@@ -106,7 +106,7 @@ public class MainIoT extends Application {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class.getResource("view/PieChart.fxml"));
+			loader.setLocation(MainIoT.class.getResource("../view/PieChart.fxml"));
 			StackPane pieChart = (StackPane) loader.load();
 		
 			rootLayout.setCenter(pieChart);
@@ -124,7 +124,7 @@ public class MainIoT extends Application {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class.getResource("view/LineChart.fxml"));
+			loader.setLocation(MainIoT.class.getResource("../view/LineChart.fxml"));
 			BorderPane lineChart = (BorderPane) loader.load();
 		
 			rootLayout.setCenter(lineChart);
