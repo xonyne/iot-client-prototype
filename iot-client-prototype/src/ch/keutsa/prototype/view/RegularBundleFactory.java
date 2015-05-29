@@ -10,7 +10,7 @@ public class RegularBundleFactory {
 
 	
 	public static RegularBundleFXML transform(RegularBundle bundle) {
-		return new RegularBundleFXML(bundle.clientMac.getMac(), bundle.clientSSID.getValue(), bundle.clientLocation.getLongitude() + ":" + bundle.clientLocation.getLatitude(), bundle.clientTime.toString(), bundle.connectionCode.toString());
+		return new RegularBundleFXML(bundle.clientMac.getMacAsString(), bundle.clientSSID.getValue(), bundle.clientLocation.getLongitude() + ":" + bundle.clientLocation.getLatitude(), bundle.clientTime.toString(), bundle.connectionCode.toString());
 	}
 
 	public static List<RegularBundleFXML> transform(List<RegularBundle> bundles) {

@@ -24,7 +24,7 @@ public final class MacAddress implements Serializable{
         return string.matches(MAC_REGEX_DEFINITION);
     }
 
-	public String getMac() {
+	public String getMacAsString() {
 		return mac;
 	}
 

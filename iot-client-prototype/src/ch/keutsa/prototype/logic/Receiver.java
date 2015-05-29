@@ -8,6 +8,9 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.layout.BorderPane;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -17,17 +20,23 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import ch.keutsa.prototype.javafxclient.MainWindow;
-import ch.keutsa.prototype.javafxclient.StatisticsWindow;
+import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.RegularBundle;
 
 public class Receiver {
 	
-	MainWindow mainWindow;
+	private ObservableMap<String, AndroidClient> clients;
 	
-	public Receiver(MainWindow mainWindow) {
-		this.mainWindow = mainWindow;
+	public Receiver(ObservableMap<String, AndroidClient> clients) {
+		this.clients = clients;
+		loadClientMessages();
 	};
+	
+	private void loadClientMessages() {
+		// TODO Load existing xml messages from file system
+	}
+
+	public Receiver(ObservableList<RegularBundle> bundles, ObservableList<AndroidClient> clients){}
 	
 	public void listen()  {
 		
@@ -36,7 +45,7 @@ public class Receiver {
 			@Override
 			public void run() {
 
-				MqttClient mqttClient = null;;
+				MqttClient mqttClient = null;
 				try {
 					mqttClient = new MqttClient("tcp://iot.eclipse.org:1883",
 							"ch.bfh.fbi.utzum1.listener");
@@ -50,8 +59,14 @@ public class Receiver {
 
 							try {
 								System.out.println(string + ";" + mm);
+								
+								// deserialize message
 								RegularBundle regularBundle = (RegularBundle)SerialHelper.fromString(mm.toString());
-								String macAddress = regularBundle.getClientMac().getMac().replace(":", "");
+								
+								// get message information
+								String macAddress = regularBundle.getClientMac().getMacAsString().replace(":", "");
+								
+								// save message to xml
 								String date = new SimpleDateFormat("yyyyMMddHHmmssS").format(regularBundle.getClientTime());
 								Path directory = FileSystems.getDefault().getPath("messages" + "/" + macAddress);
 								if (!Files.exists(directory)) {
@@ -60,9 +75,13 @@ public class Receiver {
 								File outputFile = new File(directory.toString() + "/" + date +".xml");
 								outputFile.createNewFile();
 								XMLHelper.saveInstance(outputFile, regularBundle);
-								Platform.runLater(() -> {
-									mainWindow.updateStatus(macAddress);
-								});
+								
+								// add message to in memory list
+								if(clients.containsKey(macAddress)) {
+									clients.get(macAddress).addMQTTMessage(regularBundle);
+								} else {
+									clients.put(macAddress, new AndroidClient(macAddress));
+								}
 								
 							} catch (Exception e) {
 								e.printStackTrace();

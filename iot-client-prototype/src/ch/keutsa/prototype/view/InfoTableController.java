@@ -3,19 +3,21 @@ package ch.keutsa.prototype.view;
 import java.util.Date;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ch.keutsa.prototype.javafxclient.MainIoT;
+import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.model.RegularBundleFXML;
 import ch.keutsa.prototype.model.basic.ConnectionCode;
 import ch.keutsa.prototype.model.basic.Location;
 import ch.keutsa.prototype.model.basic.MacAddress;
 import ch.keutsa.prototype.model.basic.SSID;
 
-public class InfoTableController {
+public class InfoTableController implements ListChangeListener{
 
 	  @FXML
     private TableView infoTable = new TableView();
@@ -31,9 +33,9 @@ public class InfoTableController {
     private TableColumn<ConnectionCode, String> connectionCodeColumn;*/
     
 	private MainIoT main;
-	private final ObservableList<RegularBundleFXML> bundles = FXCollections.observableArrayList(new RegularBundleFXML("12-b1-c8-30-00-4f", "Test", "0.5, 40.8", "hüt", ConnectionCode.OFFLINE.toString()));
+	private final ObservableList<RegularBundleFXML> bundles = FXCollections.observableArrayList(new RegularBundleFXML("12-b1-c8-30-00-4f", "Test", "0.5, 40.8", "hÃ¼t", ConnectionCode.OFFLINE.toString()));
 			//new RegularBundle(new MacAddress("12-a3-c7-00-30-5d"), new SSID("Test2"), new Location(100.9, 30.1), new Date(), ConnectionCode.MOBILE));
-	
+    
 	@FXML
 	private void initialize() {
 		
@@ -60,13 +62,20 @@ public class InfoTableController {
         infoTable.getItems().setAll(macs);*/
         
         infoTable.setItems(bundles);
-
 	}
 	
     public void setMain(MainIoT main) {
         this.main = main;
-    }
-    
+        main.getBundleList().addListener(this);
+        }
+
+	@Override
+	public void onChanged(Change c) {
+		while(c.next()) {
+			this.bundles.add(RegularBundleFactory.transform(c.getAddedSubList()).get(0));			
+		}
+	}
+	
    // public void parseMacAddressList(ObservableList<MacAddress> macAddressList) {
 
     	
