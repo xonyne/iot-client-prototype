@@ -27,7 +27,7 @@ public class MainIoT extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	//private ObservableList<MacAddress> macAddressList = FXCollections.observableArrayList(); 
-	private ObservableList<RegularBundle> bundles = FXCollections.observableArrayList();
+	//private ObservableList<RegularBundle> bundles = FXCollections.observableArrayList();
 	private ObservableMap<String, AndroidClient> clients = FXCollections.observableHashMap();
 	
 	public MainIoT() {
@@ -140,9 +140,9 @@ public class MainIoT extends Application {
 		return macAddressList;
 	}*/
 	
-	public ObservableList<RegularBundle> getBundleList() {
-		return bundles;
-	}
+//	public ObservableList<RegularBundle> getBundleList() {
+//		return bundles;
+//	}
 
 	public static void main(String[] args) {
 

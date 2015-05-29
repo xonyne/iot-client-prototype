@@ -17,7 +17,7 @@ import ch.keutsa.prototype.model.basic.Location;
 import ch.keutsa.prototype.model.basic.MacAddress;
 import ch.keutsa.prototype.model.basic.SSID;
 
-public class InfoTableController implements ListChangeListener{
+public class InfoTableController{
 
 	  @FXML
     private TableView infoTable = new TableView();
@@ -66,15 +66,7 @@ public class InfoTableController implements ListChangeListener{
 	
     public void setMain(MainIoT main) {
         this.main = main;
-        main.getBundleList().addListener(this);
         }
-
-	@Override
-	public void onChanged(Change c) {
-		while(c.next()) {
-			this.bundles.add(RegularBundleFactory.transform(c.getAddedSubList()).get(0));			
-		}
-	}
 	
    // public void parseMacAddressList(ObservableList<MacAddress> macAddressList) {
 
