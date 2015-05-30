@@ -45,10 +45,18 @@ public class ReceiverService {
 
 	private void readFilesInFolder(final File messagesFolder) {
 		for (final File pathToSubfolder : messagesFolder.listFiles()) {
+
+			// get only the folder name from the path
 			String clientFolder = pathToSubfolder.toString().split("/")[1];
+
+			// regenerate mac address from folder name
 			String macAddress = getMacFromFolderName(clientFolder.toString());
+
+			// add new client to map
 			AndroidClient client = new AndroidClient(macAddress);
 			this.clients.put(macAddress, client);
+
+			// deserialize xml files
 			for (final File xmlFile : pathToSubfolder.listFiles()) {
 				InputStream is;
 				try {
@@ -56,10 +64,8 @@ public class ReceiverService {
 					client.addMQTTMessage((RegularBundle) XMLHelper
 							.loadInstance(is, RegularBundle.class));
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -74,6 +80,10 @@ public class ReceiverService {
 			i += 2;
 		}
 		return sb.toString().substring(0, sb.length() - 1);
+	}
+
+	private String createFolderNameFromMac(String mac) {
+		return mac.replace(":", "");
 	}
 
 	public ReceiverService(ObservableList<RegularBundle> bundles,
@@ -108,25 +118,32 @@ public class ReceiverService {
 
 								// get message information
 								String macAddress = regularBundle
-										.getClientMac().getMacAsString()
-										.replace(":", "");
+										.getClientMac().getMacAsString();
+								String folderName = createFolderNameFromMac(macAddress);
 
-								// save message to xml
-								String date = new SimpleDateFormat(
+								// directory: mac address of the client
+								// file name: current date
+								Path directory = FileSystems.getDefault()
+										.getPath(
+												MESSAGES_FOLDER + "/"
+														+ folderName);
+								String filename = new SimpleDateFormat(
 										"yyyyMMddHHmmssS").format(regularBundle
 										.getClientTime());
-								Path directory = FileSystems.getDefault()
-										.getPath(MESSAGES_FOLDER + "/" + macAddress);
+
+								// create dir if it does not exist
 								if (!Files.exists(directory)) {
 									new File(directory.toString()).mkdirs();
 								}
+
+								// save file
 								File outputFile = new File(directory.toString()
-										+ "/" + date + ".xml");
+										+ "/" + filename + ".xml");
 								outputFile.createNewFile();
 								XMLHelper.saveInstance(outputFile,
 										regularBundle);
 
-								// add message to in memory list
+								// add message to in memory map
 								if (clients.containsKey(macAddress)) {
 									clients.get(macAddress).addMQTTMessage(
 											regularBundle);
