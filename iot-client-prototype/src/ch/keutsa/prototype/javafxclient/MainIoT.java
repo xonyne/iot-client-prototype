@@ -2,7 +2,7 @@ package ch.keutsa.prototype.javafxclient;
 
 import java.io.IOException;
 
-import ch.keutsa.prototype.logic.Receiver;
+import ch.keutsa.prototype.logic.ReceiverService;
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.view.BarChartController;
@@ -31,7 +31,7 @@ public class MainIoT extends Application {
 	private ObservableMap<String, AndroidClient> clients = FXCollections.observableHashMap();
 	
 	public MainIoT() {
-		Receiver receiver = new Receiver(clients);
+		ReceiverService receiver = new ReceiverService(clients);
 		receiver.listen();
 	}
 	

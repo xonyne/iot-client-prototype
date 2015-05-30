@@ -17,6 +17,13 @@ public class Location implements Serializable {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
+	
+    @SuppressWarnings("unused")
+	private Location(){
+    	//only for JAXB -> Constructor without arguments is required
+    	longitude=0d;
+    	latitude=0d;
+    }
 
 	public double getLongitude() {
 		return longitude;

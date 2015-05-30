@@ -19,6 +19,12 @@ public final class MacAddress implements Serializable{
         else
             throw new IllegalArgumentException();
     }
+    
+    @SuppressWarnings("unused")
+	private MacAddress(){
+    	mac=null;
+    	//only for JAXB -> Constructor without arguments is required
+    }
 
     private boolean isValid(String string) {
         return string.matches(MAC_REGEX_DEFINITION);
