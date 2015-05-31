@@ -7,6 +7,8 @@ public class AndroidClient {
 	private List<RegularBundle> mqttMessages;
 	private String macAddress;
 	
+	//TODO put chart data here?
+	
 	public AndroidClient(String macAddress) {
 		this.mqttMessages = new ArrayList<RegularBundle>();
 		this.macAddress = macAddress;

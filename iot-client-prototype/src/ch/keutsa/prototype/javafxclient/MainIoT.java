@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ch.keutsa.prototype.logic.ReceiverService;
 import ch.keutsa.prototype.model.AndroidClient;
+import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.view.BarChartController;
 import ch.keutsa.prototype.view.InfoTableController;
@@ -27,11 +28,11 @@ public class MainIoT extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	//private ObservableList<MacAddress> macAddressList = FXCollections.observableArrayList(); 
-	//private ObservableList<RegularBundle> bundles = FXCollections.observableArrayList();
 	private ObservableMap<String, AndroidClient> clients = FXCollections.observableHashMap();
 	
 	public MainIoT() {
-		ReceiverService receiver = new ReceiverService(clients);
+		KeutsaStatistics model = new KeutsaStatistics(clients);
+		ReceiverService receiver = new ReceiverService(model);
 		receiver.listen();
 	}
 	

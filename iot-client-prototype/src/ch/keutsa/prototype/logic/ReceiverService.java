@@ -27,23 +27,27 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import ch.keutsa.prototype.model.AndroidClient;
+import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
 
 public class ReceiverService {
 
 	private static final String MESSAGES_FOLDER = "messages";
-	private ObservableMap<String, AndroidClient> clients;
+	private KeutsaStatistics model;
 
-	public ReceiverService(ObservableMap<String, AndroidClient> clients) {
-		this.clients = clients;
+	public ReceiverService(KeutsaStatistics model) {
+		this.model = model;
 		loadClientMessages();
 	};
 
 	private void loadClientMessages() {
-		readFilesInFolder(new File(MESSAGES_FOLDER));
+		File messagesFolder = new File(MESSAGES_FOLDER);
+		if (messagesFolder.exists()) {
+			loadRegularBundlesFromFolder(messagesFolder);
+		}
 	}
 
-	private void readFilesInFolder(final File messagesFolder) {
+	private void loadRegularBundlesFromFolder(final File messagesFolder) {
 		for (final File pathToSubfolder : messagesFolder.listFiles()) {
 
 			// get only the folder name from the path
@@ -52,11 +56,11 @@ public class ReceiverService {
 			// regenerate mac address from folder name
 			String macAddress = getMacFromFolderName(clientFolder.toString());
 
-			// add new client to map
+			// generate client object
 			AndroidClient client = new AndroidClient(macAddress);
-			this.clients.put(macAddress, client);
+			model.addClient(macAddress, client);
 
-			// deserialize xml files
+			// load mqtt message for this client
 			for (final File xmlFile : pathToSubfolder.listFiles()) {
 				InputStream is;
 				try {
@@ -68,7 +72,7 @@ public class ReceiverService {
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
-			}
+			}	
 		}
 	}
 
@@ -144,12 +148,14 @@ public class ReceiverService {
 										regularBundle);
 
 								// add message to in memory map
-								if (clients.containsKey(macAddress)) {
-									clients.get(macAddress).addMQTTMessage(
-											regularBundle);
+								ObservableMap<String, AndroidClient> existingClients = model
+										.getClients();
+								if (existingClients.containsKey(macAddress)) {
+									existingClients.get(macAddress)
+											.addMQTTMessage(regularBundle);
 								} else {
-									clients.put(macAddress, new AndroidClient(
-											macAddress));
+									model.addClient(macAddress,
+											new AndroidClient(macAddress));
 								}
 
 							} catch (Exception e) {
