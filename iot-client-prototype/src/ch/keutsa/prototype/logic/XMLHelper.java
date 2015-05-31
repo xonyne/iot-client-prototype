@@ -17,9 +17,11 @@ public class XMLHelper {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		marshaller.marshal(instance, outputFile);
 	}
-	
-	public static Object loadInstance(InputStream inputStream, Class instanceClass) throws JAXBException {
-		Unmarshaller unmarshaller = JAXBContext.newInstance(instanceClass).createUnmarshaller();
+
+	public static Object loadInstance(InputStream inputStream,
+			Class instanceClass) throws JAXBException {
+		Unmarshaller unmarshaller = JAXBContext.newInstance(instanceClass)
+				.createUnmarshaller();
 		Object object = unmarshaller.unmarshal(inputStream);
 		return object;
 	}

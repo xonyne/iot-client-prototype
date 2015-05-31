@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -29,14 +30,15 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
+import ch.keutsa.prototype.view.RegularBundleFactory;
 
 public class ReceiverService {
 
 	private static final String MESSAGES_FOLDER = "messages";
-	private KeutsaStatistics model;
+	private KeutsaStatistics statistics;
 
 	public ReceiverService(KeutsaStatistics model) {
-		this.model = model;
+		this.statistics = model;
 		loadClientMessages();
 	};
 
@@ -51,14 +53,17 @@ public class ReceiverService {
 		for (final File pathToSubfolder : messagesFolder.listFiles()) {
 
 			// get only the folder name from the path
-			String clientFolder = pathToSubfolder.toString().split("/")[1];
+			String path = pathToSubfolder.toString();
+			path = path.replace("\\", "#");
+			path = path.replace("/", "#");
+			String clientFolder = path.split("#")[1];
 
 			// regenerate mac address from folder name
 			String macAddress = getMacFromFolderName(clientFolder.toString());
 
 			// generate client object
 			AndroidClient client = new AndroidClient(macAddress);
-			model.addClient(macAddress, client);
+			statistics.addClient(client);
 
 			// load mqtt message for this client
 			for (final File xmlFile : pathToSubfolder.listFiles()) {
@@ -67,13 +72,16 @@ public class ReceiverService {
 					is = new FileInputStream(xmlFile);
 					client.addMQTTMessage((RegularBundle) XMLHelper
 							.loadInstance(is, RegularBundle.class));
+					System.out.println(client);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
-			}	
+			}
 		}
+		if (statistics.getClients().isEmpty())
+			statistics.addClient(new AndroidClient("defaul"));
 	}
 
 	private String getMacFromFolderName(String folderName) {
@@ -114,7 +122,7 @@ public class ReceiverService {
 								throws Exception {
 
 							try {
-								System.out.println(string + ";" + mm);
+								// System.out.println(string + ";" + mm);
 
 								// deserialize message
 								RegularBundle regularBundle = (RegularBundle) SerialHelper
@@ -124,6 +132,9 @@ public class ReceiverService {
 								String macAddress = regularBundle
 										.getClientMac().getMacAsString();
 								String folderName = createFolderNameFromMac(macAddress);
+								System.out.println("New message from "
+										+ macAddress + ".");
+								System.out.println(regularBundle);
 
 								// directory: mac address of the client
 								// file name: current date
@@ -134,6 +145,7 @@ public class ReceiverService {
 								String filename = new SimpleDateFormat(
 										"yyyyMMddHHmmssS").format(regularBundle
 										.getClientTime());
+								
 
 								// create dir if it does not exist
 								if (!Files.exists(directory)) {
@@ -148,14 +160,18 @@ public class ReceiverService {
 										regularBundle);
 
 								// add message to in memory map
-								ObservableMap<String, AndroidClient> existingClients = model
+								List<AndroidClient> existingClients = statistics
 										.getClients();
-								if (existingClients.containsKey(macAddress)) {
-									existingClients.get(macAddress)
-											.addMQTTMessage(regularBundle);
+								if (existingClients.contains(new AndroidClient(
+										macAddress))) {
+									int index = existingClients
+											.indexOf(new AndroidClient(
+													macAddress));
+									existingClients.get(index).addMQTTMessage(
+											RegularBundleFactory.transform(regularBundle));
 								} else {
-									model.addClient(macAddress,
-											new AndroidClient(macAddress));
+									existingClients.add(new AndroidClient(
+											macAddress));
 								}
 
 							} catch (Exception e) {

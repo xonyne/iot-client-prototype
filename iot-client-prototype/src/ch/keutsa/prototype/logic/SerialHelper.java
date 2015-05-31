@@ -6,6 +6,7 @@ import java.io.*;
  * Usage sample serializing SomeClass instance
  */
 import java.util.*;
+
 /**
  * Usage sample serializing SomeClass instance
  */

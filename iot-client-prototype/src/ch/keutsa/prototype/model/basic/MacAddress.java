@@ -5,30 +5,30 @@ import java.io.Serializable;
 /**
  * Created by SoullessStone on 05.05.2015.
  */
-public final class MacAddress implements Serializable{
-    /**
+public final class MacAddress implements Serializable {
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5534324823414939222L;
 	private static final String MAC_REGEX_DEFINITION = "^([a-fA-F0-9]{2}[:-]{1}){5}[a-fA-F0-9]{2}$";
-    public final String mac;
+	public final String mac;
 
-    public MacAddress(String mac) {
-        if (isValid(mac))
-            this.mac = mac;
-        else
-            throw new IllegalArgumentException();
-    }
-    
-    @SuppressWarnings("unused")
-	private MacAddress(){
-    	mac=null;
-    	//only for JAXB -> Constructor without arguments is required
-    }
+	public MacAddress(String mac) {
+		if (isValid(mac))
+			this.mac = mac;
+		else
+			throw new IllegalArgumentException();
+	}
 
-    private boolean isValid(String string) {
-        return string.matches(MAC_REGEX_DEFINITION);
-    }
+	@SuppressWarnings("unused")
+	private MacAddress() {
+		mac = null;
+		// only for JAXB -> Constructor without arguments is required
+	}
+
+	private boolean isValid(String string) {
+		return string.matches(MAC_REGEX_DEFINITION);
+	}
 
 	public String getMacAsString() {
 		return mac;

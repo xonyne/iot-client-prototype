@@ -15,12 +15,12 @@ public class SSID implements Serializable {
 	public SSID(String value) {
 		this.value = value;
 	}
-	
-    @SuppressWarnings("unused")
-	private SSID(){
-    	//only for JAXB -> Constructor without arguments is required
-    	value=null;
-    }
+
+	@SuppressWarnings("unused")
+	private SSID() {
+		// only for JAXB -> Constructor without arguments is required
+		this.value = "No SSID";
+	}
 
 	public String getValue() {
 		return value;

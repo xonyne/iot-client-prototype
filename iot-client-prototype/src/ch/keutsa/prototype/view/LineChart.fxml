@@ -7,12 +7,12 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.keutsa.prototype.view.LineChartController">
    <center>
-      <LineChart fx:id="lineChart" BorderPane.alignment="CENTER">
+      <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" BorderPane.alignment="CENTER">
         <xAxis>
-          <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+          <CategoryAxis fx:id="xAxis" label="Client Time" side="LEFT" />
         </xAxis>
         <yAxis>
-          <NumberAxis fx:id="yAxis" side="LEFT" />
+          <CategoryAxis label="Connection Type" fx:id="yAxis" />
         </yAxis>
       </LineChart>
    </center>

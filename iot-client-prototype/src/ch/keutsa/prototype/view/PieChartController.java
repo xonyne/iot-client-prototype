@@ -8,23 +8,22 @@ import javafx.scene.chart.PieChart;
 
 public class PieChartController {
 
-	@FXML 
+	@FXML
 	PieChart chart;
-	
+
 	private MainIoT mainIoT;
-	
+
 	@FXML
 	public void initialize() {
 		/*
 		 * 
 		 */
-		ObservableList<PieChart.Data> pieChartData =
-				FXCollections.observableArrayList(
-				new PieChart.Data("Apfel", 20),
-				new PieChart.Data("Gurke", 12),
-				new PieChart.Data("Tomate", 25),
-				new PieChart.Data("Fenchel", 22),
-				new PieChart.Data("Radisli", 30));
+		ObservableList<PieChart.Data> pieChartData = FXCollections
+				.observableArrayList(new PieChart.Data("Apfel", 20),
+						new PieChart.Data("Gurke", 12), new PieChart.Data(
+								"Tomate", 25),
+						new PieChart.Data("Fenchel", 22), new PieChart.Data(
+								"Radisli", 30));
 
 		chart.setData(pieChartData);
 		chart.setTitle("Pie Chart");
