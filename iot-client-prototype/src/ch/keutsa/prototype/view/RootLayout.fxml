@@ -7,30 +7,8 @@
 
 <BorderPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.keutsa.prototype.view.RootLayoutController">
   <left>
-    <Accordion minWidth="130.0" prefHeight="-1.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+    <Accordion fx:id="accordion" minWidth="130.0" prefHeight="-1.0" prefWidth="150.0" BorderPane.alignment="CENTER">
       <panes>
-        <TitledPane animated="false" prefHeight="-1.0" prefWidth="150.0" text="Android1">
-          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="150.0">
-              <children>
-                <Button mnemonicParsing="false" onAction="#handleBarChart" prefWidth="102.0" text="Bar Chart" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                <Button mnemonicParsing="false" onAction="#handlePieChart" prefWidth="102.0" text="Pie Chart" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0" />
-                <Button mnemonicParsing="false" onAction="#handleInfoTable" prefWidth="102.0" text="Info Table" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="70.0" />
-                        <Button layoutX="20.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleLineChart" prefWidth="102.0" text="Line Chart" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="100.0" />
-              </children>
-            </AnchorPane>
-          </content>
-        </TitledPane>
-        <TitledPane animated="false" text="untitled 2">
-          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-          </content>
-        </TitledPane>
-        <TitledPane animated="false" text="untitled 3">
-          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-          </content>
-        </TitledPane>
       </panes>
     </Accordion>
   </left>

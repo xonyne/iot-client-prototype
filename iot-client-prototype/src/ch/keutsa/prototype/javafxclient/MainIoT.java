@@ -1,7 +1,6 @@
 package ch.keutsa.prototype.javafxclient;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,7 +93,7 @@ public class MainIoT extends Application {
 		}
 	}
 
-	public void InfoTableLayout() {
+	public void InfoTableLayout(String string) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -106,7 +105,7 @@ public class MainIoT extends Application {
 
 			InfoTableController controller = loader.getController();
 
-			controller.setMain(this);
+			controller.setMain(this, string);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

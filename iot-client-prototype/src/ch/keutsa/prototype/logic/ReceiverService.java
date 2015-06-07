@@ -8,25 +8,16 @@ import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
-
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.scene.layout.BorderPane;
-
+import javax.xml.bind.JAXBException;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
@@ -81,7 +72,7 @@ public class ReceiverService {
 			}
 		}
 		if (statistics.getClients().isEmpty())
-			statistics.addClient(new AndroidClient("defaul"));
+			statistics.addClient(new AndroidClient("default"));
 	}
 
 	private String getMacFromFolderName(String folderName) {

@@ -1,10 +1,12 @@
 package ch.keutsa.prototype.view;
 
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ch.keutsa.prototype.javafxclient.MainIoT;
+import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.RegularBundleFXML;
 
 public class InfoTableController {
@@ -49,11 +51,18 @@ public class InfoTableController {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setMain(MainIoT main) {
+	public void setMain(MainIoT main, String string) {
 		this.main = main;
-		// TODO: get(dä client, vom aktuelle täb, dä meini)
-		infoTable.setItems(main.getStatistics().getClients().get(0)
-				.getMqttMessages());
+		infoTable.setItems(getIndex(string, main.getStatistics().getClients()).getMqttMessages());
 
+	}
+	
+	private AndroidClient getIndex(String string, List<AndroidClient> clients) {
+		for(AndroidClient client : clients) {
+			if(client.getMacAddress().equals(string)) {
+				return client;
+			}
+		}
+		return null;
 	}
 }
