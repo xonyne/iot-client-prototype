@@ -1,12 +1,6 @@
 package ch.keutsa.prototype.model;
 
-import java.io.Serializable;
-import java.util.Date;
 import javafx.beans.property.SimpleStringProperty;
-import ch.keutsa.prototype.model.basic.ConnectionCode;
-import ch.keutsa.prototype.model.basic.Location;
-import ch.keutsa.prototype.model.basic.MacAddress;
-import ch.keutsa.prototype.model.basic.SSID;
 
 /**
  * Created by SoullessStone on 05.05.2015.

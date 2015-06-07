@@ -10,14 +10,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javafx.collections.ObservableList;
+
 import javax.xml.bind.JAXBException;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
@@ -136,7 +140,6 @@ public class ReceiverService {
 								String filename = new SimpleDateFormat(
 										"yyyyMMddHHmmssS").format(regularBundle
 										.getClientTime());
-								
 
 								// create dir if it does not exist
 								if (!Files.exists(directory)) {
@@ -159,10 +162,14 @@ public class ReceiverService {
 											.indexOf(new AndroidClient(
 													macAddress));
 									existingClients.get(index).addMQTTMessage(
-											RegularBundleFactory.transform(regularBundle));
+											RegularBundleFactory
+													.transform(regularBundle));
 								} else {
-									existingClients.add(new AndroidClient(
-											macAddress));
+									AndroidClient client = new AndroidClient(
+											macAddress);
+									client.addMQTTMessage(RegularBundleFactory
+											.transform(regularBundle));
+									existingClients.add(client);
 								}
 
 							} catch (Exception e) {

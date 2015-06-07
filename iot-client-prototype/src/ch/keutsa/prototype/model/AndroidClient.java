@@ -57,4 +57,9 @@ public class AndroidClient {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "AndroidClient [macAddress=" + macAddress + "]";
+	}
+
 }

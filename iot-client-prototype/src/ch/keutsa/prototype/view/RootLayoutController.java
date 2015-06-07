@@ -1,24 +1,23 @@
 package ch.keutsa.prototype.view;
 
-import java.util.ArrayList;
-import ch.keutsa.prototype.javafxclient.MainIoT;
-import ch.keutsa.prototype.model.AndroidClient;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
+import ch.keutsa.prototype.javafxclient.MainIoT;
+import ch.keutsa.prototype.model.AndroidClient;
 
 public class RootLayoutController {
 
 	private MainIoT main;
-	
+
 	@FXML
 	private Accordion accordion;
 
-	
 	@FXML
 	public void handleBarChart() {
 		main.BarChartLayout();
@@ -36,21 +35,45 @@ public class RootLayoutController {
 
 	public void setMain(MainIoT main) {
 		this.main = main;
-		main.getStatistics().getClients();
-		ArrayList<TitledPane> titles = new ArrayList<TitledPane>();
-    for (AndroidClient client : main.getStatistics().getClients()) {           
+		prepareAccordion();
+	}
 
-  		Button button1 = new Button("Info Table");
-  		button1.setOnAction(new EventHandler<ActionEvent>() {
-				
-				@Override
-				public void handle(ActionEvent event) {
-						main.InfoTableLayout(client.getMacAddress());
+	private void prepareAccordion() {
+		for (AndroidClient client : main.getStatistics().getClients()) {
+			addTitledPane(client.getMacAddress());
+		}
+
+		main.getClients().addListener(new ListChangeListener<AndroidClient>() {
+
+			@Override
+			public void onChanged(
+					javafx.collections.ListChangeListener.Change<? extends AndroidClient> c) {
+				while (c.next()) {
+					for (AndroidClient client : c.getAddedSubList()) {
+						Platform.runLater(new Runnable() {
+
+							@Override
+							public void run() {
+								addTitledPane(client.getMacAddress());
+
+							}
+						});
+					}
 				}
-			});
-    	TitledPane pane = new TitledPane(client.getMacAddress(), button1);
-    	titles.add(pane);
-  }   
-  accordion.getPanes().addAll(titles);
+
+			}
+		});
+	}
+
+	public void addTitledPane(String mac) {
+		Button infoTableButton = new Button("Info Table");
+		infoTableButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				main.InfoTableLayout(mac);
+			}
+		});
+		accordion.getPanes().add(new TitledPane(mac, infoTableButton));
 	}
 }

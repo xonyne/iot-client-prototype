@@ -1,10 +1,10 @@
 package ch.keutsa.prototype.view;
 
-import ch.keutsa.prototype.javafxclient.MainIoT;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
+import ch.keutsa.prototype.javafxclient.MainIoT;
 
 public class PieChartController {
 

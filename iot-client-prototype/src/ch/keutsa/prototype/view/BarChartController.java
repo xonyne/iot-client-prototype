@@ -1,6 +1,5 @@
 package ch.keutsa.prototype.view;
 
-import ch.keutsa.prototype.javafxclient.MainIoT;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,6 +7,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import ch.keutsa.prototype.javafxclient.MainIoT;
 
 public class BarChartController {
 
