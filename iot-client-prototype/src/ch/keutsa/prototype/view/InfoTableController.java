@@ -1,5 +1,6 @@
 package ch.keutsa.prototype.view;
 
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,9 +51,13 @@ public class InfoTableController {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setMain(MainIoT main, String string) {
+	public void setMain(MainIoT main, String mac) {
 		this.main = main;
-		infoTable.setItems(main.getStatistics().getClientByMacAddress(string).getMqttMessages());
+		updateAccordeonData(mac);
+	}
 
+	@SuppressWarnings("unchecked")
+	public void updateAccordeonData(String mac) {
+		infoTable.setItems(main.getStatistics().getClientByMacAddress(mac).getMqttMessages());
 	}
 }

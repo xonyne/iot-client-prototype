@@ -1,16 +1,9 @@
 package ch.keutsa.prototype.view;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Side;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import ch.keutsa.prototype.javafxclient.MainIoT;
 import ch.keutsa.prototype.model.RegularBundleFXML;

@@ -64,7 +64,7 @@ public class ReceiverService {
 				InputStream is;
 				try {
 					is = new FileInputStream(xmlFile);
-					client.addMQTTMessage((RegularBundle)XMLHelper
+					client.addMQTTMessage((RegularBundle) XMLHelper
 							.loadInstance(is, RegularBundle.class));
 					System.out.println(client);
 				} catch (FileNotFoundException e) {

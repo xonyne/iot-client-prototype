@@ -64,5 +64,10 @@ public class AndroidClient {
 	private void recalculateStatistics() {
 		pieChartData = StatisticsHelper.getPieChartStatistics(mqttMessages);
 	}
+	
+	@Override
+	public String toString() {
+		return "AndroidClient [macAddress=" + macAddress + "]";
+	}
 
 }

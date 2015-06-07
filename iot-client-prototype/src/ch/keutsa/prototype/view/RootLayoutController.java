@@ -8,13 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 
 public class RootLayoutController {
@@ -37,7 +33,7 @@ public class RootLayoutController {
 	public void setMain(MainIoT main) {
 		this.main = main;
 		ArrayList<TitledPane> titles = new ArrayList<TitledPane>();
-
+		
 		for (AndroidClient client : main.getStatistics().getClients()) {
 
 			Button button1 = new Button("Info Table");

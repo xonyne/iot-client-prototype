@@ -1,6 +1,7 @@
 package ch.keutsa.prototype.javafxclient;
 
 import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -155,6 +156,10 @@ public class MainIoT extends Application {
 
 	public KeutsaStatistics getStatistics() {
 		return statistics;
+	}
+
+	public ObservableList<AndroidClient> getClients() {
+		return clients;
 	}
 
 }
