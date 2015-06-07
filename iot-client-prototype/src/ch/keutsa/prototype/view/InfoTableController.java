@@ -1,12 +1,11 @@
 package ch.keutsa.prototype.view;
 
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ch.keutsa.prototype.javafxclient.MainIoT;
-import ch.keutsa.prototype.model.AndroidClient;
+import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.model.RegularBundleFXML;
 
 public class InfoTableController {
@@ -33,19 +32,19 @@ public class InfoTableController {
 				locationColumn, connectionCodeColumn);
 
 		macAddressColumn
-				.setCellValueFactory(new PropertyValueFactory<RegularBundleFXML, String>(
+				.setCellValueFactory(new PropertyValueFactory<RegularBundle, String>(
 						"clientMac"));
 		ssidColumn
-				.setCellValueFactory(new PropertyValueFactory<RegularBundleFXML, String>(
+				.setCellValueFactory(new PropertyValueFactory<RegularBundle, String>(
 						"clientSSID"));
 		timeColumn
-				.setCellValueFactory(new PropertyValueFactory<RegularBundleFXML, String>(
+				.setCellValueFactory(new PropertyValueFactory<RegularBundle, String>(
 						"clientTime"));
 		locationColumn
-				.setCellValueFactory(new PropertyValueFactory<RegularBundleFXML, String>(
+				.setCellValueFactory(new PropertyValueFactory<RegularBundle, String>(
 						"clientLocation"));
 		connectionCodeColumn
-				.setCellValueFactory(new PropertyValueFactory<RegularBundleFXML, String>(
+				.setCellValueFactory(new PropertyValueFactory<RegularBundle, String>(
 						"connectionCode"));
 
 	}
@@ -53,16 +52,7 @@ public class InfoTableController {
 	@SuppressWarnings("unchecked")
 	public void setMain(MainIoT main, String string) {
 		this.main = main;
-		infoTable.setItems(getIndex(string, main.getStatistics().getClients()).getMqttMessages());
+		infoTable.setItems(main.getStatistics().getClientByMacAddress(string).getMqttMessages());
 
-	}
-	
-	private AndroidClient getIndex(String string, List<AndroidClient> clients) {
-		for(AndroidClient client : clients) {
-			if(client.getMacAddress().equals(string)) {
-				return client;
-			}
-		}
-		return null;
 	}
 }

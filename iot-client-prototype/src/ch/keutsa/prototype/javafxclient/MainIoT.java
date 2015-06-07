@@ -93,7 +93,7 @@ public class MainIoT extends Application {
 		}
 	}
 
-	public void InfoTableLayout(String string) {
+	public void InfoTableLayout(String clientMac) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -105,13 +105,13 @@ public class MainIoT extends Application {
 
 			InfoTableController controller = loader.getController();
 
-			controller.setMain(this, string);
+			controller.setMain(this, clientMac);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void PieChartLayout() {
+	public void PieChartLayout(String clientMac) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -123,7 +123,7 @@ public class MainIoT extends Application {
 
 			PieChartController controller = loader.getController();
 
-			controller.setMain(this);
+			controller.setMain(this, clientMac);
 
 		} catch (IOException e) {
 			e.printStackTrace();

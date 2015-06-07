@@ -10,18 +10,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import javafx.collections.ObservableList;
+
 import javax.xml.bind.JAXBException;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.KeutsaStatistics;
 import ch.keutsa.prototype.model.RegularBundle;
-import ch.keutsa.prototype.view.RegularBundleFactory;
 
 public class ReceiverService {
 
@@ -61,7 +64,7 @@ public class ReceiverService {
 				InputStream is;
 				try {
 					is = new FileInputStream(xmlFile);
-					client.addMQTTMessage((RegularBundle) XMLHelper
+					client.addMQTTMessage((RegularBundle)XMLHelper
 							.loadInstance(is, RegularBundle.class));
 					System.out.println(client);
 				} catch (FileNotFoundException e) {
@@ -158,8 +161,7 @@ public class ReceiverService {
 									int index = existingClients
 											.indexOf(new AndroidClient(
 													macAddress));
-									existingClients.get(index).addMQTTMessage(
-											RegularBundleFactory.transform(regularBundle));
+									existingClients.get(index).addMQTTMessage(regularBundle);
 								} else {
 									existingClients.add(new AndroidClient(
 											macAddress));

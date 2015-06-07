@@ -1,4 +1,4 @@
-package ch.keutsa.prototype.view;
+package ch.keutsa.prototype.logic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.model.RegularBundleFXML;
 
+@Deprecated
 public class RegularBundleFactory {
 
 	public static RegularBundleFXML transform(RegularBundle bundle) {

@@ -28,7 +28,7 @@ public class SSID implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SSID [value=" + value + "]";
+		return value;
 	}
 
 	@Override

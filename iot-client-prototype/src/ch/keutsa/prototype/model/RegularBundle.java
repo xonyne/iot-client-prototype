@@ -19,7 +19,7 @@ import ch.keutsa.prototype.model.basic.SSID;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(namespace = "http://ch.fbi.xml.beispielEins", name = "regular_bundle")
-public final class RegularBundle implements Serializable {
+public final class RegularBundle implements Serializable, Comparable<RegularBundle> {
 
 	/**
      *
@@ -81,6 +81,11 @@ public final class RegularBundle implements Serializable {
 
 	public ConnectionCode getConnectionCode() {
 		return connectionCode;
+	}
+
+	@Override
+	public int compareTo(RegularBundle o) {
+		return o.getClientTime().compareTo(this.getClientTime());
 	}
 
 }

@@ -36,7 +36,7 @@ public final class MacAddress implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MacAddress [mac=" + mac + "]";
+		return mac;
 	}
 
 	@Override

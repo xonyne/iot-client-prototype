@@ -11,6 +11,7 @@ import ch.keutsa.prototype.model.basic.SSID;
 /**
  * Created by SoullessStone on 05.05.2015.
  */
+@Deprecated
 public final class RegularBundleFXML {
 
 	public final SimpleStringProperty clientMac;

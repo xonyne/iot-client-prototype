@@ -2,29 +2,32 @@ package ch.keutsa.prototype.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import ch.keutsa.prototype.view.RegularBundleFactory;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
+import ch.keutsa.prototype.logic.RegularBundleFactory;
+import ch.keutsa.prototype.logic.StatisticsHelper;
 
 public class AndroidClient {
-	private ObservableList<RegularBundleFXML> mqttMessages;
+	private ObservableList<RegularBundle> mqttMessages;
+	private ObservableList<PieChart.Data> pieChartData;
 	private String macAddress;
-
-	// TODO put chart data here?
 
 	public AndroidClient(String macAddress) {
 		this.mqttMessages = FXCollections.observableArrayList();
 		this.macAddress = macAddress;
 	}
 
-	public ObservableList<RegularBundleFXML> getMqttMessages() {
-		return mqttMessages;
-	}
-
-	public void addMQTTMessage(RegularBundleFXML message) {
-		this.mqttMessages.add(message);
-	}
-
 	public void addMQTTMessage(RegularBundle message) {
-		this.mqttMessages.add(RegularBundleFactory.transform(message));
+		this.mqttMessages.add(message);
+		recalculateStatistics();
+	}
+
+	public ObservableList<Data> getPieChartData() {
+		return this.pieChartData;
+	}
+
+	public ObservableList<RegularBundle> getMqttMessages() {
+		return mqttMessages;
 	}
 
 	public String getMacAddress() {
@@ -55,6 +58,11 @@ public class AndroidClient {
 		} else if (!macAddress.equals(other.macAddress))
 			return false;
 		return true;
+	}
+
+	// private helper methods
+	private void recalculateStatistics() {
+		pieChartData = StatisticsHelper.getPieChartStatistics(mqttMessages);
 	}
 
 }
