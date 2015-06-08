@@ -45,6 +45,7 @@ public class RootLayoutController {
 
 				@Override
 				public void handle(ActionEvent event) {
+					client.recalculateStatistics();
 					main.PieChartLayout(client.getMacAddress());
 				}
 			});

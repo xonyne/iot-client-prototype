@@ -15,7 +15,7 @@ public class PieChartController {
 	public void initialize() {
 		chart.setTitle("Pie Chart");
 		chart.setClockwise(true);
-		chart.setLegendVisible(false);
+		chart.setLegendVisible(true);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -14,12 +14,12 @@ public class AndroidClient {
 
 	public AndroidClient(String macAddress) {
 		this.mqttMessages = FXCollections.observableArrayList();
+		this.pieChartData = FXCollections.observableArrayList();
 		this.macAddress = macAddress;
 	}
 
 	public void addMQTTMessage(RegularBundle message) {
 		this.mqttMessages.add(message);
-		recalculateStatistics();
 	}
 
 	public ObservableList<Data> getPieChartData() {
@@ -61,7 +61,7 @@ public class AndroidClient {
 	}
 
 	// private helper methods
-	private void recalculateStatistics() {
+	public void recalculateStatistics() {
 		pieChartData = StatisticsHelper.getPieChartStatistics(mqttMessages);
 	}
 	
