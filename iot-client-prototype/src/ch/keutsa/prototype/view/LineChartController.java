@@ -5,18 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.LineChart.SortingPolicy;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import ch.keutsa.prototype.javafxclient.MainIoT;
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.RegularBundle;
-import ch.keutsa.prototype.model.RegularBundleFXML;
 
 ;
 
@@ -50,15 +46,9 @@ public class LineChartController {
 	public void prepareData(AndroidClient client) {
 
 		mainClient = client;
-		lineChart.setAxisSortingPolicy(LineChart.SortingPolicy.X_AXIS);
 		series1.setName(client.toString());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 		List<RegularBundle> data = new ArrayList<RegularBundle>(client.getMqttMessages()); 
-		/*for (RegularBundle bundle : client.getMqttMessages()) {
-			series1.getData().add(new XYChart.Data<String,
-					String>(dateFormat.format(bundle.clientTime),
-							bundle.getConnectionCode().toString()));
-		}*/
 
 		Collections.sort(data, new Comparator<RegularBundle>() {
 			@Override
