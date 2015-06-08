@@ -28,9 +28,6 @@ public class StatisticsHelper {
 			currentConnection = regularBundle.getConnectionCode().toString();
 			currentTime = regularBundle.getClientTime();
 
-			if (currentConnection.equals(lastConnection))
-				continue;
-
 			if (lastConnection != null) {
 				Long timeSum = timeDataConnectionTypes.get(lastConnection) != null ? timeDataConnectionTypes
 						.get(lastConnection) : 0;
@@ -45,15 +42,15 @@ public class StatisticsHelper {
 		ObservableList<Data> pieChartData = FXCollections.observableArrayList();
 		if (timeDataConnectionTypes.size() != 0) {
 			Date beginTime = mqttMessages.get(0).getClientTime();
-			Date endTime = mqttMessages.get(mqttMessages.size() - 1)
+			Date endTime = mqttMessages.get(mqttMessages.size()-1)
 					.getClientTime();
 			long totalTime = getDateDiff(beginTime, endTime, TimeUnit.MINUTES);
 
 			for (Entry<String, Long> entry : timeDataConnectionTypes.entrySet()) {
-				double averageTime = (100.0 / totalTime) * entry.getValue();
+				double connectionPercentage = (100.0 / totalTime) * entry.getValue();
 				pieChartData.add(new Data(entry.getKey() + ": "
-						+ Math.round(averageTime) + "%", Math
-						.round(averageTime)));
+						+ Math.round(connectionPercentage) + "%", Math
+						.round(connectionPercentage)));
 			}
 		} else {
 			pieChartData.add(new Data(lastConnection + ": 100%", 100d));

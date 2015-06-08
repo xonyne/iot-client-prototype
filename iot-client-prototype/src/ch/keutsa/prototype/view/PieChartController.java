@@ -11,7 +11,7 @@ public class PieChartController {
 
 	@FXML
 	public void initialize() {
-		chart.setTitle("Pie Chart");
+		chart.setTitle("Percentage per connection type");
 		chart.setClockwise(true);
 		chart.setLegendVisible(true);
 	}
