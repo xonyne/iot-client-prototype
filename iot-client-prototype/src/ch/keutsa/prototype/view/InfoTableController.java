@@ -1,18 +1,16 @@
 package ch.keutsa.prototype.view;
 
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ch.keutsa.prototype.javafxclient.MainIoT;
 import ch.keutsa.prototype.model.RegularBundle;
-import ch.keutsa.prototype.model.RegularBundleFXML;
 
 public class InfoTableController {
 
 	@FXML
-	private TableView infoTable = new TableView();
+	private TableView<RegularBundle> infoTable = new TableView<RegularBundle>();
 
 	private MainIoT main;
 
@@ -23,11 +21,16 @@ public class InfoTableController {
 	@FXML
 	private void initialize() {
 
-		TableColumn macAddressColumn = new TableColumn("MacAddress");
-		TableColumn ssidColumn = new TableColumn("SSID");
-		TableColumn timeColumn = new TableColumn("Client Time");
-		TableColumn locationColumn = new TableColumn("Location");
-		TableColumn connectionCodeColumn = new TableColumn("Connection Code");
+		TableColumn<RegularBundle, String> macAddressColumn = new TableColumn<RegularBundle, String>(
+				"MacAddress");
+		TableColumn<RegularBundle, String> ssidColumn = new TableColumn<RegularBundle, String>(
+				"SSID");
+		TableColumn<RegularBundle, String> timeColumn = new TableColumn<RegularBundle, String>(
+				"Client Time");
+		TableColumn<RegularBundle, String> locationColumn = new TableColumn<RegularBundle, String>(
+				"Location");
+		TableColumn<RegularBundle, String> connectionCodeColumn = new TableColumn<RegularBundle, String>(
+				"Connection Code");
 
 		infoTable.getColumns().addAll(macAddressColumn, ssidColumn, timeColumn,
 				locationColumn, connectionCodeColumn);
@@ -50,14 +53,13 @@ public class InfoTableController {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setMain(MainIoT main, String mac) {
 		this.main = main;
 		updateAccordeonData(mac);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void updateAccordeonData(String mac) {
-		infoTable.setItems(main.getStatistics().getClientByMacAddress(mac).getMqttMessages());
+		infoTable.setItems(main.getStatistics().getClientByMacAddress(mac)
+				.getMqttMessages());
 	}
 }

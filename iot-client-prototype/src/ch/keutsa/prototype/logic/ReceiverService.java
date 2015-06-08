@@ -11,8 +11,6 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javafx.collections.ObservableList;
-
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -92,10 +90,6 @@ public class ReceiverService {
 		return mac.replace(":", "");
 	}
 
-	public ReceiverService(ObservableList<RegularBundle> bundles,
-			ObservableList<AndroidClient> clients) {
-	}
-
 	public void listen() {
 
 		new Thread(new Runnable() {
@@ -112,64 +106,69 @@ public class ReceiverService {
 						public void connectionLost(Throwable throwable) {
 						}
 
-						public void messageArrived(String string, MqttMessage mm)
-								throws Exception {
+						public void messageArrived(String string, MqttMessage mm) {
 
+							// deserialize message
+							RegularBundle regularBundle = null;
 							try {
-								// System.out.println(string + ";" + mm);
-
-								// deserialize message
-								RegularBundle regularBundle = (RegularBundle) SerialHelper
+								regularBundle = (RegularBundle) SerialHelper
 										.fromString(mm.toString());
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 
-								// get message information
-								String macAddress = regularBundle
-										.getClientMac().getMacAsString();
-								String folderName = createFolderNameFromMac(macAddress);
-								System.out.println("New message from "
-										+ macAddress + ".");
-								System.out.println(regularBundle);
+							// get message information
+							String macAddress = regularBundle.getClientMac()
+									.getMacAsString();
+							String folderName = createFolderNameFromMac(macAddress);
+							System.out.println("New message from " + macAddress
+									+ ".");
+							System.out.println(regularBundle);
 
-								// directory: mac address of the client
-								// file name: current date
-								Path directory = FileSystems.getDefault()
-										.getPath(
-												MESSAGES_FOLDER + "/"
-														+ folderName);
-								String filename = new SimpleDateFormat(
-										"yyyyMMddHHmmssS").format(regularBundle
-										.getClientTime());
-								
+							// directory: mac address of the client
+							// file name: current date
+							Path directory = FileSystems.getDefault().getPath(
+									MESSAGES_FOLDER + "/" + folderName);
+							String filename = new SimpleDateFormat(
+									"yyyyMMddHHmmssS").format(regularBundle
+									.getClientTime());
 
-								// create dir if it does not exist
-								if (!Files.exists(directory)) {
-									new File(directory.toString()).mkdirs();
-								}
+							// create dir if it does not exist
+							if (!Files.exists(directory)) {
+								new File(directory.toString()).mkdirs();
+							}
 
-								// save file
-								File outputFile = new File(directory.toString()
-										+ "/" + filename + ".xml");
+							// save file
+							File outputFile = new File(directory.toString()
+									+ "/" + filename + ".xml");
+							try {
 								outputFile.createNewFile();
 								XMLHelper.saveInstance(outputFile,
 										regularBundle);
-
-								// add message to in memory map
-								List<AndroidClient> existingClients = statistics
-										.getClients();
-								if (existingClients.contains(new AndroidClient(
-										macAddress))) {
-									int index = existingClients
-											.indexOf(new AndroidClient(
-													macAddress));
-									existingClients.get(index).addMQTTMessage(regularBundle);
-								} else {
-									existingClients.add(new AndroidClient(
-											macAddress));
-								}
-
-							} catch (Exception e) {
+							} catch (JAXBException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
 								e.printStackTrace();
 							}
+
+							// add message to in-memory list
+							List<AndroidClient> existingClients = statistics
+									.getClients();
+							if (existingClients.contains(new AndroidClient(
+									macAddress))) {
+								int index = existingClients
+										.indexOf(new AndroidClient(macAddress));
+								existingClients.get(index).addMQTTMessage(
+										regularBundle);
+							} else {
+								AndroidClient client = new AndroidClient(
+										macAddress);
+								client.addMQTTMessage(regularBundle);
+								existingClients.add(client);
+							}
+
 						}
 
 						public void deliveryComplete(IMqttDeliveryToken imdt) {
@@ -181,10 +180,8 @@ public class ReceiverService {
 					mqttClient.subscribe("ch.keutsa.prototype");
 					System.in.read();
 				} catch (MqttException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 

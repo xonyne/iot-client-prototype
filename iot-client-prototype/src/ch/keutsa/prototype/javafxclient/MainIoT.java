@@ -16,7 +16,6 @@ import javafx.stage.WindowEvent;
 import ch.keutsa.prototype.logic.ReceiverService;
 import ch.keutsa.prototype.model.AndroidClient;
 import ch.keutsa.prototype.model.KeutsaStatistics;
-import ch.keutsa.prototype.view.BarChartController;
 import ch.keutsa.prototype.view.InfoTableController;
 import ch.keutsa.prototype.view.LineChartController;
 import ch.keutsa.prototype.view.PieChartController;
@@ -42,8 +41,7 @@ public class MainIoT extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Keutsa Statistics");
 
-		this.primaryStage.getIcons().add(
-				new Image("file:resources/images/icon.png"));
+		this.primaryStage.getIcons().add(new Image("file:resources/icon.gif"));
 
 		// "default close operation"
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -73,25 +71,6 @@ public class MainIoT extends Application {
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
-	}
-
-	public void BarChartLayout() {
-
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainIoT.class
-					.getResource("../view/BarChart.fxml"));
-			BorderPane barChart = (BorderPane) loader.load();
-
-			rootLayout.setCenter(barChart);
-
-			BarChartController controller = loader.getController();
-
-			controller.setMain(this);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void InfoTableLayout(String clientMac) {

@@ -18,10 +18,4 @@
         </yAxis>
       </LineChart>
    </center>
-   <bottom>
-      <Button fx:id="otherClients" mnemonicParsing="false" onAction="#addClients" text="Other Clients" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin></Button>
-   </bottom>
 </BorderPane>

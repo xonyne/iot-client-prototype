@@ -19,7 +19,8 @@ import ch.keutsa.prototype.model.basic.SSID;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(namespace = "http://ch.fbi.xml.beispielEins", name = "regular_bundle")
-public final class RegularBundle implements Serializable, Comparable<RegularBundle> {
+public final class RegularBundle implements Serializable,
+		Comparable<RegularBundle> {
 
 	/**
      *

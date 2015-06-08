@@ -16,10 +16,10 @@ public class KeutsaStatistics {
 	public List<AndroidClient> getClients() {
 		return this.clients;
 	}
-	
+
 	public AndroidClient getClientByMacAddress(String mac) {
-		for(AndroidClient client : clients) {
-			if(client.getMacAddress().equals(mac)) {
+		for (AndroidClient client : clients) {
+			if (client.getMacAddress().equals(mac)) {
 				return client;
 			}
 		}

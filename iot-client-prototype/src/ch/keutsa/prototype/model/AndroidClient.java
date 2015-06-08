@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
-import ch.keutsa.prototype.logic.RegularBundleFactory;
 import ch.keutsa.prototype.logic.StatisticsHelper;
 
 public class AndroidClient {
@@ -64,7 +63,7 @@ public class AndroidClient {
 	public void recalculateStatistics() {
 		pieChartData = StatisticsHelper.getPieChartStatistics(mqttMessages);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "AndroidClient [macAddress=" + macAddress + "]";

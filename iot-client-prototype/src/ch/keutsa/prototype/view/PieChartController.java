@@ -9,8 +9,6 @@ public class PieChartController {
 	@FXML
 	PieChart chart;
 
-	private MainIoT main;
-
 	@FXML
 	public void initialize() {
 		chart.setTitle("Pie Chart");
@@ -18,10 +16,9 @@ public class PieChartController {
 		chart.setLegendVisible(true);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setMain(MainIoT main, String string) {
-		this.main = main;
-		chart.setData(main.getStatistics().getClientByMacAddress(string).getPieChartData());
+		chart.setData(main.getStatistics().getClientByMacAddress(string)
+				.getPieChartData());
 	}
 
 }
