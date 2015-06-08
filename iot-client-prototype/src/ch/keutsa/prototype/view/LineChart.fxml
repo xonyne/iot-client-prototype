@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
@@ -9,11 +11,17 @@
    <center>
       <LineChart fx:id="lineChart" alternativeColumnFillVisible="true" BorderPane.alignment="CENTER">
         <xAxis>
-          <CategoryAxis fx:id="xAxis" label="Client Time" side="LEFT" />
+          <CategoryAxis label="Client Time" side="LEFT" fx:id="xAxis" />
         </xAxis>
         <yAxis>
-          <CategoryAxis label="Connection Type" fx:id="yAxis" />
+          <CategoryAxis fx:id="yAxis" label="Connection Type" />
         </yAxis>
       </LineChart>
    </center>
+   <bottom>
+      <Button fx:id="otherClients" mnemonicParsing="false" onAction="#addClients" text="Other Clients" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin></Button>
+   </bottom>
 </BorderPane>

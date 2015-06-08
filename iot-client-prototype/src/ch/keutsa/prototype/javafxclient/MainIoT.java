@@ -131,7 +131,7 @@ public class MainIoT extends Application {
 		}
 	}
 
-	public void LineChartLayout() {
+	public void LineChartLayout(String clientMac) {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -143,7 +143,7 @@ public class MainIoT extends Application {
 
 			LineChartController controller = loader.getController();
 
-			controller.setMain(this);
+			controller.setMain(this, clientMac);
 
 		} catch (IOException e) {
 			e.printStackTrace();

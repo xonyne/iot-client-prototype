@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:regular_bundle xmlns:ns2="http://ch.fbi.xml.beispielEins">
+    <client_mac>
+        <mac>6c:ad:f8:43:9b:8b</mac>
+    </client_mac>
+    <client_ssid>
+        <value>"yeu-99201"</value>
+    </client_ssid>
+    <client_location>
+        <longitude>1898.0</longitude>
+        <latitude>1898.0</latitude>
+    </client_location>
+    <client_time>2015-06-07T23:09:57.386+02:00</client_time>
+    <client_connectioncode>WLAN</client_connectioncode>
+</ns2:regular_bundle>

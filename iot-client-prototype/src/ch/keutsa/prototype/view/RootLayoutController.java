@@ -25,11 +25,6 @@ public class RootLayoutController {
 		main.BarChartLayout();
 	}
 
-	@FXML
-	public void handleLineChart() {
-		main.LineChartLayout();
-	}
-
 	public void setMain(MainIoT main) {
 		this.main = main;
 		ArrayList<TitledPane> titles = new ArrayList<TitledPane>();
@@ -54,7 +49,16 @@ public class RootLayoutController {
 				}
 			});
 			
-			VBox vbox = new VBox(10,button1,button2);
+			Button button3 = new Button("Line Chart");
+			button3.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					main.LineChartLayout(client.getMacAddress());
+				}
+			});
+			
+			VBox vbox = new VBox(10,button1,button2,button3);
 			vbox.setPrefWidth(Double.MAX_VALUE);	
 			vbox.setAlignment(Pos.TOP_CENTER);
 			

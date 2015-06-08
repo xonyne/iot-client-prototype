@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:regular_bundle xmlns:ns2="http://ch.fbi.xml.beispielEins">
+    <client_mac>
+        <mac>00:ee:bd:9f:b5:41</mac>
+    </client_mac>
+    <client_ssid>
+        <value>No SSID</value>
+    </client_ssid>
+    <client_location>
+        <longitude>1898.0</longitude>
+        <latitude>1898.0</latitude>
+    </client_location>
+    <client_time>2015-06-08T08:19:44.284+02:00</client_time>
+    <client_connectioncode>MOBILE</client_connectioncode>
+</ns2:regular_bundle>

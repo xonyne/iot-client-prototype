@@ -1,11 +1,21 @@
 package ch.keutsa.prototype.view;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.LineChart.SortingPolicy;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import ch.keutsa.prototype.javafxclient.MainIoT;
+import ch.keutsa.prototype.model.AndroidClient;
+import ch.keutsa.prototype.model.RegularBundle;
 import ch.keutsa.prototype.model.RegularBundleFXML;
 
 ;
@@ -18,44 +28,67 @@ public class LineChartController {
 	private CategoryAxis xAxis;
 	@FXML
 	private LineChart<String, String> lineChart;
+	@FXML
+	private Button otherClients;
 
 	private MainIoT mainIoT;
 
 	private XYChart.Series<String, String> series1 = new XYChart.Series<String, String>();
 
+	private AndroidClient mainClient;
 	@FXML
 	public void initialize() {
 
 		lineChart.setTitle("Overview");
-
-		// TODO Nach Datum Serien erfassen
-		// TODO Date wäre auch möglich - Date-Time, nach ConnectionCode
-		// sortiert?
-
 	}
 
-	public void setMain(MainIoT mainIoT) {
+	public void setMain(MainIoT mainIoT, String mac) {
 		this.mainIoT = mainIoT;
-		// prepareData(mainIoT.getBundles());
+		prepareData(mainIoT.getStatistics().getClientByMacAddress(mac));
 	}
 
-	public void prepareData(ObservableList<RegularBundleFXML> bundles) {
+	public void prepareData(AndroidClient client) {
 
-		// SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		// for (RegularBundleFXML rb : mainIoT.getBundles()) {
-		// series1.getData().add(new XYChart.Data<String,
-		// String>(dateFormat.format(rb.clientTime),
-		// rb.connectionCode.getValue()));
-		// }
-		// lineChart.getData().add(series1);
-		//
-		// SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
-		// series1.setName(formatter.format(mainIoT.getBundles().get(1).clientTime));
-		// //TODO: getClientNames()
-		//
-		// XYChart.Series<String, String> series2 = new XYChart.Series<String,
-		// String>();
-		// series2.setName("Android2");
-		// lineChart.getData().add(series2);
+		mainClient = client;
+		lineChart.setAxisSortingPolicy(LineChart.SortingPolicy.X_AXIS);
+		series1.setName(client.toString());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		List<RegularBundle> data = new ArrayList<RegularBundle>(client.getMqttMessages()); 
+		/*for (RegularBundle bundle : client.getMqttMessages()) {
+			series1.getData().add(new XYChart.Data<String,
+					String>(dateFormat.format(bundle.clientTime),
+							bundle.getConnectionCode().toString()));
+		}*/
+
+		Collections.sort(data, new Comparator<RegularBundle>() {
+			@Override
+			public int compare(RegularBundle o1, RegularBundle o2) {
+				return o1.clientTime.compareTo(o2.clientTime);
+			}
+		});
+		for (RegularBundle bundleSorted : data) {
+			series1.getData().add(new XYChart.Data<String,
+				String>(dateFormat.format(bundleSorted.clientTime),
+						bundleSorted.getConnectionCode().toString()));
+		}
+		lineChart.getData().add(series1);
+	}
+	
+	@FXML
+	public void addClients() {
+		XYChart.Series<String, String> series2 = new XYChart.Series<String, String>();
+		XYChart.Series<String, String> series3 = new XYChart.Series<String, String>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		
+		for (AndroidClient client : mainIoT.getStatistics().getClients()) {
+			if(!client.equals(mainClient))
+				for (RegularBundle bundle : client.getMqttMessages()) {
+					series2.getData().add(new XYChart.Data<String,
+							String>(dateFormat.format(bundle.clientTime),
+								bundle.getConnectionCode().toString()));
+				}
+		}
+		
+		lineChart.getData().add(series2);
 	}
 }
